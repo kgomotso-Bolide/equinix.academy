@@ -2,14 +2,14 @@
   (function(){
     const chat=document.getElementById('aiChat'),tabs=document.getElementById('aiTabs');if(!chat||!tabs)return;
     const SCENES=[
-      {u:"Draft a friendly email to a client letting them know their order ships Friday and apologising for the earlier delay.",
-       b:"<b>Subject: Your order ships Friday</b><br><br>Hi Thandi,<br><br>Good news — your order is packed and will ship this <b>Friday</b>. Apologies for the earlier delay; thank you for your patience. You'll receive tracking the moment it's on the way.<br><br>Warm regards,<br>The Team"},
-      {u:"Summarise this 12-page quarterly report into 3 key points for our leadership meeting.",
-       b:"Here are the 3 headlines from the report:<br><br>• <b>Revenue up 18%</b> QoQ, led by the new online channel.<br>• <b>Support costs down 22%</b> after automating routine queries.<br>• <b>Risk:</b> one supplier now accounts for 40% of stock — worth diversifying."},
-      {u:"I have 5,000 rows of sales data. Which regions are underperforming and why?",
-       b:"Analysis complete:<br><br>• <b>Western Cape & Gauteng</b> are on target.<br>• <b>Eastern Cape is 31% below forecast</b> — driven by two months of stock-outs.<br>• Recommended action: rebalance inventory and review the regional delivery lead time."},
-      {u:"Plan a 6-week project to roll out AI training across a 40-person team.",
-       b:"Here's a phased plan:<br><br>• <b>Wk 1–2:</b> Skills assessment + AI fundamentals for all staff.<br>• <b>Wk 3–4:</b> Role-based tool training (sales, ops, admin).<br>• <b>Wk 5:</b> Hands-on projects on real workflows.<br>• <b>Wk 6:</b> Review, measure time saved, set team standards."}
+      {u:"Draft a reply to a customer asking why their cross-connect order is still open — the fibre was pulled but the patch is waiting on a change window.",
+       b:"<b>Subject: Cross-connect XC-40221 — scheduled for Thursday</b><br><br>Hi Nomsa,<br><br>Your cross-connect between cage 4B and the meet-me room is <b>physically installed</b> — the fibre run and testing were completed on Tuesday.<br><br>What's outstanding is the patch into your cabinet, which needs a <b>change window</b> on your side. The next available slot is <b>Thursday 02:00–04:00 SAST</b>; reply to confirm and we'll have an engineer on site.<br><br>Kind regards,<br>Equinix Customer Support"},
+      {u:"Summarise this month's facility report into 3 points for the ops meeting.",
+       b:"Three things worth raising:<br><br>• <b>PUE down to 1.38</b> from 1.44, following the chiller setpoint change in hall 2.<br>• <b>Three cabinets in hall 3 above 85% of rated power</b> — worth a capacity conversation with those customers before the next deployment.<br>• <b>Two CRAC units short-cycling</b> overnight; both are inside the maintenance window, so schedule rather than escalate."},
+      {u:"Here's 5,000 rows of half-hourly branch-circuit data. Which racks look wrong?",
+       b:"Three anomalies stand out:<br><br>• <b>11 cabinets drawing zero on the B feed</b> for 20+ days — single-corded kit, so no redundancy if the A feed drops.<br>• <b>Cabinet 3-D-14 spikes to 9.2 kW at 02:00 nightly</b> — a batch job, not a fault, but it is over the design envelope.<br>• <b>Hall 4's total is 7% above</b> the sum of its branch circuits — check the metering calibration before you re-plan capacity."},
+      {u:"Plan a 6-week build-out for 480 cabinets in a new hall.",
+       b:"Here's a phased plan:<br><br>• <b>Wk 1:</b> Floor survey + asset register; confirm power feeds, containment routes and access windows.<br>• <b>Wk 2–4:</b> Two teams, 40 cabinets a day, each metered and registered to DCIM same-day.<br>• <b>Wk 5:</b> Structured cabling, labelling and meet-me-room patching; first customer walkthroughs.<br>• <b>Wk 6:</b> Commission power and cooling, reconcile DCIM against the floor, hand over to operations."}
     ];
     let active=-1,timer=null;
     const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
