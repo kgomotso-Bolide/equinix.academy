@@ -121,6 +121,8 @@ sps/
 │                           #   (ours · more AI · free international), accreditation badges
 ├── about.html              # About: positioning, industry line, accreditation, photo posters
 ├── skills-gap.html         # Skills Gap Analysis — 3-step self-assessment, runs in-browser
+├── rpl.html                # Recognition of Prior Learning: the three QCTO purposes,
+│                           #   portfolio of evidence, the process, and what RPL is not
 ├── profile.html            # Optional local profile (no account, localStorage only)
 ├── ai-in-action.html       # Interactive AI demo + impact stats
 ├── contact.html            # Contact details + working registration form
@@ -255,6 +257,13 @@ accredited qualification.
   "Name to follow" and the quote is generic. Replace all three when Equinix supplies them.
 - [ ] **Academy photographs** — `images/poster-1.svg` and `poster-2.svg` are placeholders on both the
   home and about pages, with "Caption to follow" captions. Swap the images and rewrite the captions.
+- [x] **Recognition of Prior Learning (11 Aug 2026)** — `rpl.html` plus the Skills Gap wiring, ported
+  from Fungi on Kgomotso's instruction that RPL is available to staff at all three companies. The Skills
+  Gap result now reads an RPL case off answers it already collects (qualification, years, self-rating)
+  and offers it in three tiers. Access is offered only to candidates holding nothing formal, since Matric
+  is normally the NQF 5 entry requirement — telling a Matric holder they need RPL to get in would be
+  wrong. Linked from every footer, from the accreditation explainer on `courses.html`, and from any
+  course flagged `acc:"local"`.
 - [ ] **Sign off the Skills Gap role targets** — the eight per-role targets in `skills-gap.js` were
   written from this site's own description of the work and have **not** been reviewed by the people who
   run those teams. The page says so; get them checked before anyone treats the output as authoritative.
