@@ -7,6 +7,7 @@
     ["AI for Leaders & Managers","ai-leaders","1552664730-d307ca884978"],
     ["AI & New Venture Creation","new-venture","1559136555-9303baea8ebd"],
     ["Occupational Certificate: Computer Technician","computer-technician","1581092160562-40aa08e78837"],
+    ["Occupational Certificate: Project Manager","project-management","1454165804606-c3d57bc86b40"],
     ["Deploying TinyML","deploying-tinyml","1593376853899-fbb47a057fa0"],
     ["Fundamentals of TinyML","fundamentals-tinyml","1518770660439-4636190af475"],
     ["AI Strategy for Business Leaders","ai-strategy","1542744173-8e7e53415bb0"],
@@ -26,6 +27,7 @@
   var ARROW=' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px;color:var(--accent)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   document.querySelectorAll('.ccard').forEach(function(card){
     if(card.dataset.href) return;   // external course — courses-index.js links it out
+    if(card.dataset.locked) return; // locked by locks.js — no link, no photo, no arrow
     var h=card.querySelector('h4'); if(!h) return;
     var t=h.textContent.trim(), hit=null;
     for(var i=0;i<CARDS.length;i++){ if(t.indexOf(CARDS[i][0])>-1){ hit=CARDS[i]; break; } }

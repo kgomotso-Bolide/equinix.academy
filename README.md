@@ -276,9 +276,10 @@ accredited qualification.
     `BRAND`/`UID_HOST` constants name this academy, because they end up inside the downloaded file.
   - `pm-progress.html` / `pm-progress.js` — self-reported progress, submitted to HR, printable with a
     manager countersignature. Deliberately **no backend**; see the SPS README for the POPIA reasoning.
-  - `locks.js` — only the Project Manager route is open for enrolment while its material is prepared.
-    26 of 28 cards are locked: visible, badged, and never wired to a link. Edit `OPEN_TITLES` /
-    `OPEN_SLUGS` in that one file to reopen anything.
+  - `locks.js` — the switch for narrowing the catalogue to a named set of courses. **Off here** (12 Aug
+    2026): the whole catalogue is open. SPS runs it on while the Project Manager material is prepared;
+    each academy sets it independently. Set `LOCKS_ON = true` in that one file to narrow this one, and
+    the `OPEN_TITLES` / `OPEN_SLUGS` lists are left intact so it returns to exactly its previous state.
   - **Documents are not hosted here.** Assessment papers, marking memos and facilitator guides are
     excluded outright; learner guides and workbooks sit behind Drive/SharePoint links set in `DOCS`.
   - Bug found during this port: `pm-progress.js` hardcoded `window.SPSProfile`, so progress silently

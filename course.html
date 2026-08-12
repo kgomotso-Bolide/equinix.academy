@@ -445,7 +445,7 @@
        legacy /ai-fundamentals redirect — but it must not offer enrolment. The
        curriculum below stays readable on purpose: seeing what is coming is
        useful, signing up for something that isn't running is not. */
-    const locked = !!(window.Equinix_LOCKS && !Equinix_LOCKS.slugOpen(getSlug()));
+    const locked = !!(window.COURSE_LOCKS && !COURSE_LOCKS.slugOpen(getSlug()));
     if(locked){
       document.getElementById('c-lock').innerHTML=
         '<div class="c-rplnote is-lock"><strong>This course isn\'t open yet.</strong> '+
@@ -576,7 +576,7 @@
   function openVideo(src,title){
     if(src==='SAMPLE')src=SAMPLE;
     if(src){mount.innerHTML='<video controls autoplay playsinline src="'+src+'"></video>';}
-    else{mount.innerHTML='<div class="soon"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#f37424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M8 5v14l11-7z"/></svg></div><h3>'+(title||'Lesson video')+'</h3><p>This lesson unlocks on enrolment. Full video content will appear here once added.</p></div>';}
+    else{mount.innerHTML='<div class="soon"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#e91c24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:30px;height:30px"><path d="M8 5v14l11-7z"/></svg></div><h3>'+(title||'Lesson video')+'</h3><p>This lesson unlocks on enrolment. Full video content will appear here once added.</p></div>';}
     modal.classList.add('open');document.body.style.overflow='hidden';
   }
   function closeVideo(){modal.classList.remove('open');mount.innerHTML='';document.body.style.overflow='';}
