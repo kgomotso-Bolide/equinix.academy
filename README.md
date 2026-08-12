@@ -264,6 +264,29 @@ accredited qualification.
   is normally the NQF 5 entry requirement — telling a Matric holder they need RPL to get in would be
   wrong. Linked from every footer, from the accreditation explainer on `courses.html`, and from any
   course flagged `acc:"local"`.
+- [x] **Project Manager NQF 5, in full (12 Aug 2026)** — ported from SPS so all three academies carry
+  the same structure. Adds the registered qualification (SAQA **101869**, curriculum 121905000, NQF 5,
+  240 credits) plus everything around it:
+  - `module.html` + `pm-modules.js` — the 11 knowledge modules as study guides: 51 topics with their
+    registered weightings, 265 sub-topic areas, the defining idea for each. Credits sum to 80 and every
+    module's weightings sum to 100, asserted in the browser so a bad edit fails loudly.
+  - `pm-pathway.html` — how the Google Project Management Certificate maps onto the qualification.
+    Carries **Centenary's own 50% overlap figure**, attributed to them, not our earlier mapping.
+  - `pm-schedule.html` / `pm-schedule.js` — pace → module dates → `.ics` calendar invites. Its
+    `BRAND`/`UID_HOST` constants name this academy, because they end up inside the downloaded file.
+  - `pm-progress.html` / `pm-progress.js` — self-reported progress, submitted to HR, printable with a
+    manager countersignature. Deliberately **no backend**; see the SPS README for the POPIA reasoning.
+  - `locks.js` — only the Project Manager route is open for enrolment while its material is prepared.
+    26 of 28 cards are locked: visible, badged, and never wired to a link. Edit `OPEN_TITLES` /
+    `OPEN_SLUGS` in that one file to reopen anything.
+  - **Documents are not hosted here.** Assessment papers, marking memos and facilitator guides are
+    excluded outright; learner guides and workbooks sit behind Drive/SharePoint links set in `DOCS`.
+  - Bug found during this port: `pm-progress.js` hardcoded `window.SPSProfile`, so progress silently
+    disabled itself on Equinix (`EquinixProfile`). It now discovers whichever profile global the site
+    exposes. Worth remembering — the three sites do not share global names.
+- [ ] **Fill in the `DOCS` links in `pm-modules.js`** — 33 slots (guide/workbook/video × 11) are `null`,
+  so every module currently reads "Ask HR for a copy". Set each file's sharing permissions *before*
+  pasting its link: these pages are public, so a link is only as private as its own sharing setting.
 - [ ] **Sign off the Skills Gap role targets** — the eight per-role targets in `skills-gap.js` were
   written from this site's own description of the work and have **not** been reviewed by the people who
   run those teams. The page says so; get them checked before anyone treats the output as authoritative.
