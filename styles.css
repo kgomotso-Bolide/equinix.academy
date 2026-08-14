@@ -70,6 +70,7 @@ section{padding:80px 0}
 .sec-head-wide{max-width:880px}
 .sec-head h2.lede-h{font-size:clamp(25px,3.2vw,38px);line-height:1.2;text-wrap:balance}
 .sec-head p{color:var(--ink-soft);font-size:17px}
+.sec-head p+p{margin-top:14px}
 .section-dark .sec-head p{color:#c8c2d4}
 .page-top{padding-top:132px}
 
@@ -456,7 +457,8 @@ footer{background:var(--dark);color:#a9a2b4;padding:52px 0 30px;font-size:14px}
 .pill{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
   padding:4px 10px;border-radius:20px;background:var(--bg-soft);color:var(--ink-soft);white-space:nowrap}
 /* --green-deep on --green-tint measures 7:1+ in this palette, so the done
-   pill stays on-brand rather than needing a hand-picked ink like SPS. */
+   pill stays on-brand rather than needing a hand-picked ink, as it does on a
+   palette where the two do not clear 4.5:1. */
 .pill.done{background:var(--green-tint);color:var(--green-deep)}
 .pill.going{background:var(--orange-tint);color:var(--orange-deep)}
 
