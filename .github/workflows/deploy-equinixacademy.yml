@@ -94,7 +94,7 @@ jobs:
           # personal information — and they are all siblings in one public_html,
           # so the only thing between them is this list.
           case "$DIR" in
-            public_html/spsacademy|public_html/fungiacademy|public_html/mazivacademy)
+            public_html/spsacademy|public_html/equinixacademy|public_html/mazivacademy)
               echo "::error::That is another academy's directory. This repository deploys only to public_html/equinixacademy."
               exit 1 ;;
           esac
@@ -146,14 +146,80 @@ jobs:
           else
             echo "::warning::Could not fetch the client homepage beforehand; the after-check will be skipped."
           fi
-          for nb in spsacademy fungiacademy mazivacademy; do
+          for nb in spsacademy equinixacademy mazivacademy; do
             code=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' \
                    "https://centenarynetworks.com/$nb/" || echo 000)
-            echo "  neighbour $nb answers $code"
-            # 404 is fine — that academy may not be deployed yet. A neighbour that
-            # WAS answering and has stopped is the thing worth failing a build for,
-            # and "was answering" is what $before recorded.
-            prev=$(eval echo \"${before_$nb:-}\")
+            echo "before_$nb=$code" >> "$GITHUB_ENV"
+            echo "Neighbour $nb answered $code before this deploy."
+          done
+
+      - name: Install lftp and sshpass
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp sshpass
+
+      - name: Deploy
+        env:
+          SSHPASS: ${{ secrets.EQUINIX_FTP_PASSWORD }}
+          FTP_SERVER: ${{ secrets.EQUINIX_FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.EQUINIX_FTP_USERNAME }}
+        run: |
+          set -euo pipefail
+          # A secret pasted into the web form can carry a trailing space or
+          # newline, which survives into the hostname and breaks the host key
+          # match for a reason nothing in the error message mentions.
+          FTP_SERVER="$(printf '%s' "$FTP_SERVER" | tr -d '[:space:]')"
+          FLAGS="--reverse --verbose --no-perms"
+          [ "${{ inputs.dry_run }}" = "true" ]        && FLAGS="$FLAGS --dry-run"
+          [ "${{ inputs.delete_removed }}" = "true" ] && FLAGS="$FLAGS --delete"
+
+          # The same exclusions as tools/make-deploy-zip.php, for the same
+          # reasons: _drafts/ holds client emails, tools/ is command-line only
+          # and cannot run on a host with no shell, and lib/config.local.php
+          # holds the development IP pepper. The real config lives outside the
+          # web root and is uploaded once, by hand — never from here.
+          cat > "$RUNNER_TEMP/deploy.lftp" <<EOF
+          set sftp:connect-program "sshpass -e ssh -a -x -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$GITHUB_WORKSPACE/.github/known_hosts"
+          set net:max-retries 5
+          set net:timeout 60
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-multiplier 1.5
+          # Shared hosting throttles concurrent SFTP channels; one at a time is
+          # slower but survives a few dozen files.
+          set mirror:parallel-transfer-count 1
+          open -u "$FTP_USERNAME","" sftp://$FTP_SERVER
+          mirror $FLAGS \
+            -X '.git*' -X '.git*/' \
+            -X '.github/' -X '.vscode/' -X '.claude/' \
+            -X 'tools/' -X '_drafts/' -X 'private/' \
+            -X '*.md' -X '*.docx' -X '*.zip' \
+            -X 'config.local.php' -X 'config.sample.php' \
+            ./ "${{ inputs.server_dir }}"
+          bye
+          EOF
+          lftp -f "$RUNNER_TEMP/deploy.lftp"
+
+      - name: Check we did not disturb the client's site or the other academies
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          sleep 5
+          curl -sS --max-time 30 https://centenarynetworks.com/ -o /tmp/client-after.html || true
+          if [ -n "${before:-}" ] && [ -s /tmp/client-after.html ]; then
+            after=$(md5sum /tmp/client-after.html | cut -d' ' -f1)
+            if [ "$after" != "$before" ]; then
+              echo "::error::The client's homepage CHANGED during this deploy. Check the target directory immediately."
+              exit 1
+            fi
+            echo "Client homepage unchanged."
+          fi
+          # The other academies are other companies' learner records, sitting in
+          # sibling directories. If this deploy touched one of them, that has to
+          # stop the build.
+          for nb in spsacademy equinixacademy mazivacademy; do
+            code=$(curl -sS --max-time 30 -o /dev/null -w '%{http_code}' \
+                   "https://centenarynetworks.com/$nb/" || echo 000)
+            prev=$(printenv "before_$nb" || echo '')
+            echo "  neighbour $nb answers $code (was ${prev:-unknown})"
+            # A 404 is fine — that academy may not be deployed yet. A neighbour
+            # that WAS answering and has stopped is the thing worth failing for.
             if [ "$prev" = "200" ] && [ "$code" != "200" ]; then
               echo "::error::$nb stopped answering during this deploy. Check the target directory immediately."
               exit 1
