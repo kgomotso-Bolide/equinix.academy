@@ -1,2 +1,10 @@
 .vscode/
 copy-dont-touch.html
+
+# Development database, client notes and the local config: never in git.
+.claude/
+_drafts/
+lib/config.local.php
+*.sqlite
+*.sqlite-journal
+private/
