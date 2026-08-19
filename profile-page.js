@@ -1,15 +1,33 @@
-/* ---- Profile page: hydrate the form, render the snapshot panels ----
+/* ---- Profile page: hydrate the form, render the saved courses ----
    Only runs on profile.html. The store itself lives in profile.js. */
 (function(){
   var form=document.getElementById('pf-form'); if(!form) return;
-  var P=window.EquinixProfile;
 
-  var FIELDS=['name','empno','dept','manager','email','phone','role','years','qual','bg'];
+  /* FIND THE STORE BY WHAT IT DOES, NOT BY WHAT IT IS CALLED.
+     profile.js is shared and names its API window.SPSProfile. The other three
+     academies were branded separately and their own copy of this file read
+     window.FungiProfile / MazivProfile / EquinixProfile — so on the day
+     profile.js was first synced out of SPS, that name stopped existing and this
+     page died on its first line. It failed silently, because a profile page
+     that renders nothing looks exactly like a profile page nobody has filled
+     in, and it stayed broken on three client sites until 19 Aug 2026.
+     pm-progress.js already searches window for whatever implements the API, for
+     this same reason. Doing it here too means a fifth academy cannot repeat it. */
+  var P=(function(){
+    if(window.SPSProfile) return window.SPSProfile;
+    for(var k in window){
+      if(!/Profile$/.test(k)) continue;
+      var o; try{ o=window[k]; }catch(e){ continue; }   // cross-origin frames throw
+      if(o&&typeof o.get==='function'&&typeof o.save==='function'&&
+         typeof o.available==='function') return o;
+    }
+    return null;
+  })();
+  if(!P) return;
+
+  var FIELDS=['name','empno','dept','manager','email','phone'];
   function el(k){ return document.getElementById('pf-'+k); }
 
-  var ROLE_NAMES={dctech:'Data Centre Technician',field:'Field Engineering',netops:'Network Operations',
-    care:'Customer Care',datasys:'Data & Systems',lead:'Team Lead / Supervisor',
-    manager:'Manager / Head of Department',support:'Admin & Support'};
 
   /* ---- storage availability ---- */
   if(!P.available()){
@@ -39,39 +57,10 @@
     flag.textContent=ok?'Saved to this device':'Could not save — storage is blocked';
     flag.classList.toggle('bad',!ok);
     if(ok&&P.firstName()) greet.textContent='Welcome back, '+P.firstName();
-    window.dispatchEvent(new Event('equinix-profile-changed'));
+    window.dispatchEvent(new Event('academy-profile-changed'));
     setTimeout(function(){ flag.hidden=true; },4000);
   });
 
-  /* ---- skills snapshot ---- */
-  function renderSkills(){
-    var body=document.getElementById('pf-skills-body');
-    var s=P.get().skills;
-    if(!s||!s.rows||!s.rows.length){
-      body.innerHTML='<p class="sg-intro">You haven\'t run the Skills Gap check yet. It takes about two minutes and '+
-        'tells you where you sit against the target for your role.<br><br>'+
-        '<a class="btn btn-primary" href="skills-gap">Run the Skills Gap check</a></p>';
-      return;
-    }
-    var gaps=s.rows.filter(function(r){return r.gap>0;}).sort(function(a,b){return b.gap-a.gap;});
-    var when=s.date?new Date(s.date):null;
-    body.innerHTML=
-      '<p class="sg-intro">Saved from your Skills Gap check'+
-        (when?' on '+when.toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'}):'')+
-        (s.role?', against a <strong>'+s.role+'</strong>':'')+'.</p>'+
-      '<div class="gapchart">'+ s.rows.map(function(r){
-        var cls=r.gap<=0?'ok':(r.gap===1?'mid':'hi'), txt=r.gap<=0?'On track':(r.gap===1?'Small gap':'Priority');
-        return '<div class="gaprow">'+
-          '<div class="gaplabel">'+r.n+'</div>'+
-          '<div class="gaptrack"><div class="gapbar" style="width:'+(r.self/4*100)+'%"></div>'+
-          '<div class="gapmark" style="left:'+(r.target/4*100)+'%"></div></div>'+
-          '<div class="gapstat '+cls+'">'+txt+'</div></div>';
-      }).join('') +'</div>'+
-      '<p class="sg-priv">'+(gaps.length
-        ? 'Biggest gap: <strong>'+gaps[0].n+'</strong>. '
-        : 'You were at or above target on everything. ')+
-      '<a href="skills-gap">Run it again</a> to update this.</p>';
-  }
 
   /* ---- saved courses ---- */
   function renderCourses(){
@@ -112,15 +101,14 @@
     FIELDS.forEach(function(k){ var e=el(k); if(e) e.value=''; });
     greet.textContent='Save your details once';
     clearBtn.dataset.armed=''; clearBtn.textContent='Delete my profile';
-    renderSkills(); renderCourses();
+    renderCourses();
     var flag=document.getElementById('pf-saved');
     flag.hidden=false; flag.classList.remove('bad'); flag.textContent='Profile deleted from this device';
     setTimeout(function(){ flag.hidden=true; },4000);
-    window.dispatchEvent(new Event('equinix-profile-changed'));
+    window.dispatchEvent(new Event('academy-profile-changed'));
   });
 
   document.getElementById('pf-print').addEventListener('click',function(){ window.print(); });
 
-  renderSkills();
   renderCourses();
 })();

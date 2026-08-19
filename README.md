@@ -1,5 +1,41 @@
 # Equinix · AI Skills Programme — Website Blueprint
 
+## Changed on 19 August 2026
+
+Kgomotso's five changes, rolled out of SPS. Anything below this note that
+contradicts it is out of date.
+
+1. **Occupational Certificate: Computer Technician is withdrawn.** Out of the
+   catalogue, the course template, the assistant and `learner_catalogue()`.
+   Enrolment rows already filed against it are untouched.
+2. **Occupational Certificate: Project Manager is first** on the home page and
+   the catalogue, and is what a bare `/course` renders. It was not on the home
+   page at all before this — the qualification arrived after that page was
+   built, so the one course anybody can enrol on was the one not shown.
+3. **Courses run online or in person.** Only the ones we deliver ourselves; the
+   Coursera, Google and Helsinki courses still say ONLINE, because they are.
+4. **Less reading.** The accreditation essay is one sentence and the "Ask us"
+   panel has gone. **Skills Gap, RPL and AI in Action are removed**, left as
+   redirects rather than deleted because links to them have already been
+   emailed out and a 404 on this host serves the client's own homepage.
+   `skills-gap.js` and `demo.js` are deleted. The profile page lost its skills
+   panel and the four background selects that only fed it.
+5. **New Graduates page** — `graduates.html` + `graduates.js`, in the nav
+   between Courses and Contact. It ships with an empty list and renders an
+   honest "we are still collecting these" panel rather than invented people.
+   Every entry needs `consent: true`: a name, a photograph and an employer on
+   a public page are personal information under POPIA.
+
+Two things that were already broken and were fixed on the way through:
+
+- `profile-page.js` read `window.FungiProfile` / `MazivProfile` /
+  `EquinixProfile`, but the shared `profile.js` names its API
+  `window.SPSProfile`. This page had thrown on its first line since the day
+  that file was synced. It now finds the store by what it implements.
+- The injected **Sign in** link was body-grey on a saturated brand nav bar.
+
+---
+
 > **AI Skills, Built In-House**
 > Equinix Academy is Equinix's own training academy, for Equinix staff: a catalogue of 800
 > qualifications and courses, fully funded by the company and delivered online. Accredited
