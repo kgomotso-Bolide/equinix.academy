@@ -44,11 +44,28 @@ contradicts it is out of date.
    emailed out and a 404 on this host serves the client's own homepage.
    `skills-gap.js` and `demo.js` are deleted. The profile page lost its skills
    panel and the four background selects that only fed it.
-5. **New Graduates page** — `graduates.html` + `graduates.js`, in the nav
-   between Courses and Contact. It ships with an empty list and renders an
-   honest "we are still collecting these" panel rather than invented people.
-   Every entry needs `consent: true`: a name, a photograph and an employer on
-   a public page are personal information under POPIA.
+5. **Graduates page** — `graduates.html` + `graduates.js`, in the nav between
+   Courses and Contact. **Populated 20 Aug 2026** with Centenary's real cohorts:
+   the 2021–24 Dartcom apprenticeship as a wide `.cohort` panel carrying its
+   three figures (100% pass rate, R16k starting salary), and the 2022 electrical
+   intake as nine `.face` cards. The photographs live in `images/graduates/`;
+   the cards are drawn from palette variables, so they came out in this site's
+   own colours rather than SPS orange.
+
+   **Why those nine are publishable:** they are the second cohort of the Bubble
+   G.U.M project, which runs under Centenary Networks and is led by Kgomotso
+   Moloantoa, and they already appear under their own names and photographs in
+   Centenary's own magazine and cohort deck. Confirmed by the owner on
+   20 Aug 2026. That basis is recorded at the top of `graduates.js` — a consent
+   flag with nothing written down behind it is just a boolean somebody set.
+
+   Every entry still needs `consent: true`, and `REVIEW = true` puts the page
+   back into preview for a cohort nobody has cleared yet. Turning REVIEW off
+   publishes only consented entries, so it fails closed.
+
+   The list is Centenary's people, not this company's, so `graduates.js` is on
+   the sync manifest and is the same file on all four sites. `graduates.html` is
+   not — like every other .html it carries this site's own chrome.
 
 Two things that were already broken and were fixed on the way through:
 
