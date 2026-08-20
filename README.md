@@ -1,5 +1,29 @@
 # Equinix · AI Skills Programme — Website Blueprint
 
+## Changed on 20 August 2026
+
+Kgomotso is taking three lines to market: **Project Management**, **AI short**
+**courses**, and **AI & Software Development**. The third did not exist here, so it
+was built — `ai-software-development`, eight modules, second card in both catalogues,
+in `cards.js`, in the assistant, and in `learner_catalogue()` so an admin can enrol
+somebody on it rather than only show it to them. Three tiles at the top of `/courses`
+name the three lines.
+
+**Its syllabus is ours, not a registered curriculum.** Project Manager's modules come
+out of the QCTO documents and are not ours to change; these eight were written by us
+and are not signed off. The course page says so, in a box, until they are.
+
+The card artwork uses `var(--accent)` and `var(--green)` rather than literal hexes, so
+one piece of markup is this site's own colours. Every earlier card was hand-painted,
+which is why moving one between academies has always meant repainting it.
+
+Also: the course page's "Skills you'll walk away with" list is keyed by category and
+silently falls back to Business for one it does not know, so a programming course was
+promising five bullets about saving time on routine tasks. Software Development has
+its own entry now.
+
+---
+
 ## Changed on 19 August 2026
 
 Kgomotso's five changes, rolled out of SPS. Anything below this note that
