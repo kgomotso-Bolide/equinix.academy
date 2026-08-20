@@ -66,6 +66,18 @@ contradicts it is out of date.
    The list is Centenary's people, not this company's, so `graduates.js` is on
    the sync manifest and is the same file on all four sites. `graduates.html` is
    not — like every other .html it carries this site's own chrome.
+   **Doubled and resharpened 20 Aug 2026.** The Bubble G.U.M `.pptx` was found in the owner's
+   Downloads. A `.pptx` is a zip, so the original photographs were in `ppt/media/` all along —
+   366px to 2131px wide, against the 167x150px screenshot crops this page first shipped with.
+   Every picture was replaced and the cards moved to a 4:5 portrait window. Slide 14 added nine
+   more named learners, so the second cohort now shows in the two halves the deck itself uses:
+   **Trades-preneurs** (trade titles, working) and **Learners** (named by the field they are
+   training in).
+
+   Faces were paired to names by slide **geometry**, not document order — PowerPoint stores
+   shapes in z-order, and on slide 14 the caption order is not the reading order. Zipping the
+   two lists would have put four of the nine faces under the wrong person's name.
+
 
 Two things that were already broken and were fixed on the way through:
 
