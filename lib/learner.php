@@ -86,6 +86,14 @@ function learner_catalogue(): array
             'note'    => 'A professional programme, not an accredited qualification',
             'tracked' => false,   // no module structure on the site yet
         ],
+        /* "Skills course" is Kgomotso's own label for these, given 22 Aug 2026:
+           a customised short course, built with a specialist, deliberately not
+           accredited. Only the Project Manager route is the qualification. */
+        'procurement' => [
+            'title'   => 'Procurement Skills',
+            'note'    => 'A skills course — customised, and not accredited',
+            'tracked' => false,   // no module structure on the site yet
+        ],
         'short-course' => [
             'title'   => null,   // whatever the registration asked for
             'note'    => 'A short course, not an accredited qualification',
