@@ -104,7 +104,10 @@
   var body=panel.querySelector('.aiw-body'), inp=panel.querySelector('input'), seeded=false;
   function scroll(){body.scrollTop=body.scrollHeight;}
   function addMsg(cls,html){var d=document.createElement('div');d.className='aiw-msg '+cls;d.innerHTML=html;body.appendChild(d);scroll();return d;}
-  function addCards(items){var w=document.createElement('div');w.className='aiw-cards';w.innerHTML=items.map(function(m){return '<a class="aiw-card" href="course?c='+m.slug+'"><b>'+m.t+'</b><span>'+m.cat+'</span></a>';}).join('');body.appendChild(w);scroll();}
+  function addCards(items){var w=document.createElement('div');w.className='aiw-cards';w.innerHTML=items.map(function(m){/* Most entries are courses at course?c=<slug>; an entry may instead carry
+     its own href (the partner programme menu is a page, not a course). */
+    var h=m.href||('course?c='+m.slug);
+    return '<a class="aiw-card" href="'+h+'"><b>'+m.t+'</b><span>'+m.cat+'</span></a>';}).join('');body.appendChild(w);scroll();}
   function addChips(items){var w=document.createElement('div');w.className='aiw-chipset';w.innerHTML=items.map(function(c){return '<button class="aiw-chip">'+c+'</button>';}).join('');w.querySelectorAll('.aiw-chip').forEach(function(b){b.addEventListener('click',function(){send(b.textContent);});});body.appendChild(w);scroll();}
   function botTurn(blocks){
     var t=document.createElement('div'); t.className='aiw-msg bot aiw-typing'; t.innerHTML='<span></span><span></span><span></span>'; body.appendChild(t); scroll();
