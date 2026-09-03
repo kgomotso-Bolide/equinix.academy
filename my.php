@@ -31,6 +31,7 @@ require __DIR__ . '/lib/csrf.php';
 require __DIR__ . '/lib/auth.php';
 require __DIR__ . '/lib/install.php';   // install_readable_password(), via learner.php
 require __DIR__ . '/lib/learner.php';
+require __DIR__ . '/lib/quiz.php';
 require __DIR__ . '/lib/chrome.php';
 
 $me = require_user();
@@ -158,6 +159,30 @@ function when_local(?string $utc): string
               <a class="btn btn-ghost" href="pm-progress">Progress report for my manager</a>
               <a class="btn btn-ghost" href="pm-pathway">How this fits with Google</a>
             </div>
+
+            <?php
+              /* Rendered here, not fetched client-side like the progress
+                 panel above — that one needs a script because it has a
+                 localStorage-vs-account fallback to resolve; nobody reaches
+                 this page signed out, so there is nothing to resolve here. */
+              $quizSummary = db_optional(fn() => quiz_results_summary_for_user((int) $me['id'], $slug), []);
+              $quizSummary = array_filter($quizSummary, fn(array $q) => $q['published'] && $q['questions'] > 0);
+            ?>
+            <?php if ($quizSummary): ?>
+              <div class="my-quiz">
+                <span class="lbl">Self-check quizzes</span>
+                <?php foreach ($quizSummary as $mod => $q): ?>
+                  <a class="my-quiz-row" href="<?= e('quiz?course=' . rawurlencode($slug) . '&module=' . rawurlencode($mod)) ?>">
+                    <span class="my-quiz-mod"><?= e($mod) ?></span>
+                    <span class="my-quiz-status">
+                      <?= $q['best']
+                            ? e($q['best']['pct'] . '% best of ' . $q['best']['attempts'] . ' attempt' . ($q['best']['attempts'] === 1 ? '' : 's'))
+                            : e($q['questions'] . ' question' . ($q['questions'] === 1 ? '' : 's') . ', not attempted yet') ?>
+                    </span>
+                  </a>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
           <?php else: ?>
             <p class="my-untracked">This course does not have its modules on the site yet, so
               there is nothing here to tick off. Your materials come to you from the academy
@@ -225,10 +250,11 @@ function when_local(?string $utc): string
              colour is unreadable on white. Same idea, light-background twin. */ ?>
     <div class="my-privacy">
       <span class="lbl">What the academy can see, and what it is for</span>
-      Your ticks, and the dates you made them. The academy uses them to know who needs help
-      and to report on the programme — they are your own record of what you have studied, not
-      a mark and not an assessment result. Being found competent is Centenary's decision after
-      assessment, and the qualification is awarded by the QCTO after the external assessment.
+      Your ticks, and the dates you made them — the same is true of any self-check quiz score
+      above. The academy uses them to know who needs help and to report on the programme; they
+      are your own record of what you have studied, not a mark and not an assessment result.
+      Being found competent is Centenary's decision after assessment, and the qualification is
+      awarded by the QCTO after the external assessment.
       What is held about you, why, and how to ask for it is set out in the
       <a href="privacy">privacy notice</a>.
     </div>
@@ -278,7 +304,7 @@ function when_local(?string $utc): string
         '<p class="prog-note">' + o.modulesComplete + ' of ' + o.modulesTotal +
           ' modules marked complete · ' + o.creditsClaimed + ' of ' + o.creditsTotal +
           ' knowledge credits covered by your own record. The practical and workplace ' +
-          'credits are assessed separately, against your work at ' + <?= json_encode(brand("company_short")) ?> + '.</p></div>' +
+          'credits are assessed separately, against your work at ' + <?= json_encode(brand("company_short"), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?> + '.</p></div>' +
         (next
           ? '<a class="my-next" href="module?m=' + encodeURIComponent(next.m.id) + '">' +
               '<span class="my-next-lbl">Carry on with</span>' +

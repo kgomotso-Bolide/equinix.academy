@@ -88,6 +88,23 @@ $requiredAlso = [
     // is the half that works while the domain's SPF record is still missing;
     // shipping one without the other leaves somebody locked out.
     'forgot.php', 'reset.php', 'admin-users.php', 'lib/reset.php',
+    // The invite route: "Enrol" can email a one-time set-password link instead
+    // of showing the password on screen. Same reasoning as the pair above —
+    // shipping invite.php without lib/invite.php (or the reverse) leaves a
+    // link in somebody's inbox that 404s when they open it.
+    'invite.php', 'lib/invite.php', 'lib/mail.php',
+    // File-backed materials and self-check quizzes. materials.php and
+    // admin-materials.php already ship via the wildcard git-tracked list, but
+    // both are dead without the lib/ files their new code paths call into —
+    // and .user.ini is what makes an upload of any real size possible at all
+    // under Xneelo's FastCGI/PHP-FPM, see the file itself.
+    'lib/material_files.php', 'lib/quiz.php', 'quiz.php', 'admin-quizzes.php',
+    'quiz-widget.js', '.user.ini',
+    // Reading a module on the page, area by area. Same pairing rule as above:
+    // lessons.php without lib/sections.php is a page that cannot answer, and
+    // lessons.js without lessons.php quietly renders nothing at all — which
+    // looks exactly like "no content written yet" and would not be noticed.
+    'lib/sections.php', 'lessons.php', 'admin-lessons.php', 'lessons.js',
     'schema/schema.mysql.sql',
 ];
 
