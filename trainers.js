@@ -66,10 +66,13 @@
    highly interested in joining the programme. That is what turned the two
    flags below from false to true.
 
-   STILL OUTSTANDING: PHOTOGRAPHS. Neither has one, so both cards fall back to
-   initials, which looks deliberate rather than broken. Drop a file into
-   images/trainers/ and set the `photo` key — see the note in that folder for
-   the naming.
+   PHOTOGRAPHS: both arrived and were cleared on 25 Aug 2026, so this is settled
+   for the two published trainers. Taryn McCormick's is in the folder too, but a
+   file arriving is not the same as clearance — see her entry. Anyone without a
+   file falls back to initials, which looks deliberate rather than broken. Drop
+   a file into images/trainers/ and set the `photo` key; the note in that folder
+   has the naming, and asks you to check they are happy with THAT photograph
+   rather than with "a photo".
 
    CONSENT ALONE IS NOT ENOUGH TO PUBLISH
    --------------------------------------
@@ -79,6 +82,25 @@
    worse for that person than not being listed for another week. So the filter
    below is consent AND NOT pending, and Fiston appears the moment his profile
    arrives without anyone having to remember a second switch.
+
+   DO NOT PARK AN UNCLEARED PERSON IN THIS FILE
+   --------------------------------------------
+   A consent:false entry does not render — but THIS FILE IS SERVED PUBLICLY, at
+   /trainers.js, on four academy sites. A name, an employer, qualifications and
+   a bio describing somebody as one of our trainers are all readable there
+   whether or not a card is drawn. consent:false stops the page from asserting
+   it; it does not stop anyone reading it.
+
+   So a person we have not cleared does not go in this array at all, not even
+   switched off. Their drafted record waits in _drafts/, which is excluded from
+   the deploy mirror, from make-deploy-zip.php, from .htaccess and from the dev
+   server, and it moves in here in the same edit that sets consent:true. That is
+   the route Irisha Luhanga's record took on 3 Sep 2026; nobody is waiting there
+   now.
+
+   The same reasoning is why an uncleared photograph gets a RewriteRule in
+   .htaccess rather than just being left unlinked: the deploy mirrors images/
+   wholesale. Unlinked is not unpublished, in either file.
 
    WHAT WE DO NOT PUBLISH, EVER
    ----------------------------
@@ -165,6 +187,125 @@
       photo: 'images/trainers/fiston-nselike.jpg',
       linkedin: '',          // NOT to be filled from LinkedIn — see the note above
       consent: true
+    },
+
+    /* ⚠ TARYN McCORMICK IS NOT TARRYN NORRIS. Two different people, and the
+       first names differ by one letter — Taryn / Tarryn. Tarryn Norris is the
+       procurement trainer at the top of this file, Managing Director of Waria
+       Consulting. Taryn McCormick is HR by profession and teaches wellness and
+       the Project Manager qualification. They share no employer, no subject and
+       no photograph. Before editing either record, check which one you have.
+
+       Added 25 Aug 2026, on Kgomotso's instruction relayed through the client:
+       "Taryn McCormick, wellness teacher, HR by profession, she also does
+       wellness and she will teach project manager." The three facts below are
+       exactly that sentence and nothing more has been added to them — no
+       employer, no qualifications, no narrative. Same discipline as Fiston's
+       entry: a factual placement is honest, an invented profile is not.
+
+       PHOTOGRAPH supplied by the client on 25 Aug 2026 while this record was
+       being written, renamed to the convention in images/trainers/README.md.
+
+       CLEARED TO PUBLISH 25 Aug 2026 — the client confirmed consent covering
+       both being named and this photograph, which is what that folder's README
+       asks for ("not just for a photo — it is her face on five public
+       websites"). That is what turned consent from false to true and removed
+       pending. The .htaccess rule that was holding the image back came out at
+       the same moment: leaving it would have rendered a broken image rather
+       than falling back to her initials.
+
+       STILL THIN, DELIBERATELY. We have no employer and no qualifications for
+       her, so `org` and `creds` are empty and the card simply omits both — the
+       renderer drops them rather than leaving a gap. Her card is therefore
+       shorter than Tarryn's and Fiston's, who carry an MCIPS and an ECSA
+       registration. That is a fair reflection of what we actually know and not
+       something to paper over: fill the two fields in when they arrive, and do
+       not invent them meanwhile.
+
+       Her wellness teaching has nowhere to point yet: there is no wellness
+       course record, and the Wellness & Health School on /courses currently
+       holds the three AI in Medicine courses and nothing else. `teaches` below
+       therefore links only the qualification, which does exist. Add the wellness
+       course first; do not invent a slug for it here. */
+    {
+      name: 'Taryn McCormick',
+      role: 'Wellness, and human resources',
+      org: '',               // to be supplied — see note above
+      creds: '',             // to be supplied — see note above
+      teaches: [['project-management', 'Occupational Certificate: Project Manager']],
+      bio: 'A human resources professional by background, teaching wellness and the ' +
+           'Occupational Certificate: Project Manager.',
+      photo: 'images/trainers/taryn-mccormick.jpg',
+      linkedin: '',
+      consent: true          // confirmed 25 Aug 2026 — name and photograph both
+    },
+
+    /* Coaching, organisational development and entrepreneurship.
+
+       Tarryn Norris emailed Sibusiso on 3 Sep 2026: "Please see attached the
+       bio for Irisha Luhanga. Please include her on the platform." Irisha had
+       separately written to Kgomotso herself, attaching her bio and CV — "some
+       of the training that we facilitate as well as my BIO and CV to give you a
+       better understanding".
+
+       CLEARED TO PUBLISH 3 Sep 2026. Sibusiso confirmed that everything we were
+       sent is material we received for her profile and is to be used. That is
+       what turned consent from false to true, and it covers the photograph too.
+
+       The bio below is drawn from her own coaching bio — a marketing document,
+       carrying her website, her LinkedIn and a closing "connect with Irisha
+       Luhanga!", so plainly written to be shown — plus the training menu she
+       set out in her own email. Same footing as Tarryn's Waria deck.
+
+       TWO THINGS TO CONFIRM WITH HER AS THIS BEDS IN:
+
+       1. Which the MPhil is. Her bio's heading lists "MPHIL- Leadership
+          Coaching" among her qualifications, while its body says she "recently
+          submitted her thesis towards a Master's Degree in Leadership
+          Coaching". Those are different claims. Marked below the conservative
+          way, the same way Tarryn's in-progress MBA is marked — correct it
+          upward once she confirms, rather than guessing upward now.
+
+       2. The named clients. Sasol, WomHub, De Beers Trailblazer and WPP are
+          hers to claim and she listed them herself, but they are third parties
+          who did not choose to appear on four academy websites. Worth a nod
+          from her before this is pushed to the other academies.
+
+       NOT HERE. Her mobile number and personal email address: the card has no
+       contact field, and contact details are not profile copy. Her own bio PDF
+       stays in private/trainers/ and is not linked from anywhere — using what
+       it says is not the same as publishing her CV as a downloadable file, and
+       it carries both of those numbers. It moved out of images/trainers/ on
+       3 Sep 2026, where the deploy would have published it: the mirror has no
+       blanket *.pdf exclude, because resources/ holds real course PDFs.
+
+       NO COURSE TO POINT AT YET. There is no coaching, leadership-development
+       or HR course on the site, so `teaches` is empty and the card omits the
+       row. Add the course, then add the slug here — do not invent one. */
+    {
+      name: 'Irisha Luhanga',
+      role: 'Leadership coaching, organisational development and entrepreneurship',
+      org: 'Founder, Redefine Human Capital',
+      creds: 'MPhil Leadership Coaching (thesis submitted) · BA Hons · BTech · ' +
+             'NLP Master Practitioner & Coach · Enneagram Practitioner & Coach · ' +
+             'Licensed GrowthWheel Business Advisor',
+      teaches: [],           // no coaching or leadership course exists yet — see note above
+      bio: 'An accredited coach with a background in learning product development, ' +
+           'programme management and people leadership. Across twenty-five years of work ' +
+           'she spent the last twelve building and leading a learning design and delivery ' +
+           'team operating across the African continent, and she now runs Redefine Human ' +
+           'Capital. Her training covers leadership and management development, ' +
+           'organisational design and change, HR frameworks and people operations, and ' +
+           'the design of graduate, learnership and mentorship programmes; her leadership ' +
+           'coaching for founders and entrepreneurs has been delivered with clients ' +
+           'including Sasol, WomHub, De Beers Trailblazer and WPP. A recent board member ' +
+           'of the South African Women in ICT Forum, she pushed there for STEM training ' +
+           'and development to be set against youth unemployment. Her Master’s research ' +
+           'asked what business coaching actually does for women-owned businesses inside ' +
+           'South African incubators.',
+      photo: 'images/trainers/irisha-luhanga.jpg',
+      linkedin: 'https://www.linkedin.com/in/irisha-luhanga-58aa2029',
+      consent: true          // confirmed 3 Sep 2026 — name, profile and photograph
     }
   ];
 
