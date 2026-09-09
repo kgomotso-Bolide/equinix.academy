@@ -100,6 +100,12 @@
     state.cat=b.dataset.cat; setActive(catRow,'cat',state.cat); apply();
   });
 
+  /* A search typed into the landing-page hero arrives here as ?q=…, so the
+     catalogue opens already filtered instead of showing everything. It seeds
+     the same state the search box writes, so Clear filters undoes it. */
+  var seed=(new URLSearchParams(location.search).get("q")||"").trim();
+  if(seed){ q.value=seed; state.q=seed.toLowerCase(); }
+
   apply();
 })();
 
