@@ -105,6 +105,20 @@ $requiredAlso = [
     // lessons.js without lessons.php quietly renders nothing at all — which
     // looks exactly like "no content written yet" and would not be noticed.
     'lib/sections.php', 'lessons.php', 'admin-lessons.php', 'lessons.js',
+    // The bundle loader is how a course's reading and questions reach a site at
+    // all, since the content itself is never in this repository — see the header
+    // of lib/bundle.php. admin-lessons.php hard-requires it, so shipping the
+    // page without it is a white screen on the content page.
+    'lib/bundle.php',
+    // The curriculum reader, which lib/bundle.php require_once's and the letters
+    // read module and topic titles from. Missing, every bundle upload is refused
+    // with "not a topic in the curriculum" — the file is fine, the site is not.
+    'lib/curriculum.php',
+    // The learner's welcome letter and module report. lib/invite.php calls into
+    // this for the enrolment email; without it a new learner still gets the old
+    // plain-text note, so the failure is quiet rather than broken — which is
+    // exactly why it is listed here rather than left to chance.
+    'lib/letters.php',
     'schema/schema.mysql.sql',
 ];
 
