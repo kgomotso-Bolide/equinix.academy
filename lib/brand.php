@@ -31,6 +31,11 @@ return [
   'logo'          => 'equinix-logo.jpg',
   'logo_alt'      => 'Equinix',
 
+  /* Set beside the logo on the PHP pages, as the static pages already do — the mark
+     is an icon with no lettering, so without this the sign-in, contact and admin
+     pages never said whose academy they were. See chrome_wordmark(). */
+  'wordmark'      => 'EQUINIX',
+
   /* Centenary runs the academy for all four companies, so registrations and
      reset notifications go to Centenary, not to the client. */
   'academy_email'   => 'kgomotso@centenarynetworks.com',
