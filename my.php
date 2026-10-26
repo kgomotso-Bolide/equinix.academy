@@ -465,14 +465,14 @@ function when_local(?string $utc): string
         '</div>' +
         '<div class="prog-bar"><i style="width:' + o.pct + '%"></i></div>' +
         '<p class="prog-note">' + o.modulesComplete + ' of ' + o.modulesTotal +
-          ' modules marked complete · ' + o.creditsClaimed + ' of ' + o.creditsTotal +
-          ' ' + ESC(note) + '</p></div>' +
+          ' modules marked complete' + (cur.shortCourse ? '.' :
+          ' · ' + o.creditsClaimed + ' of ' + o.creditsTotal + ' ' + ESC(note)) + '</p></div>' +
         (next
           ? '<a class="my-next" href="module?m=' + encodeURIComponent(next.m.id) + q + '">' +
               '<span class="my-next-lbl">Carry on with</span>' +
               '<strong>' + ESC(next.m.id) + ' · ' + ESC(next.m.title) + '</strong>' +
               '<span class="my-next-sub">' + next.s.done + ' of ' + next.s.total +
-                ' topics done · ' + next.m.credits + ' credits</span></a>'
+                ' topics done' + (cur.shortCourse ? '' : ' · ' + next.m.credits + ' credits') + '</span></a>'
           : '<p class="my-done">Every module on this course is marked complete. Send the academy ' +
             'a dated record from the progress report page, and speak to them about your ' +
             'portfolio of evidence.</p>');
@@ -487,3 +487,6 @@ function when_local(?string $utc): string
 <script src="<?= e(asset('site.js')) ?>"></script>
 </body>
 </html>
+        /* A short course carries no credits (shortCourse, since 26 Oct 2026),
+           so the credit count and its sentence are left off rather than shown
+           as a claim the course cannot back. */
