@@ -500,6 +500,7 @@
     if(c.acc==="local")tags.push('<span class="accred">Locally accredited · '+ESC(c.level)+'</span>');
     if(c.acc==="intl")tags.push('<span class="accred">Internationally accredited</span>');
     tags.push('<span>'+ESC(c.cat)+'</span>','<span>'+ESC(c.mode)+'</span>','<span>'+ESC(c.level)+'</span>');
+    if(c.shortCourse)tags.push('<span>Not accredited</span>');
     if(c.avail)tags.push('<span>'+ESC(c.avail)+'</span>');
     document.getElementById('c-tags').innerHTML=tags.join('');
 
@@ -551,7 +552,6 @@
       ? '<div class="c-rplnote"><strong>'+ESC(c.pathway.lead)+'</strong> '+ESC(c.pathway.body)+
         ' <a href="'+c.pathway.href+'">'+ESC(c.pathway.cta)+'</a></div>'
       : '';
-    if(c.shortCourse)tags.push('<span>Not accredited</span>');
 
     /* A self-paced qualification needs a pacing aid more than a taught one does,
        so the planner is offered wherever a course record names one. */

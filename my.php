@@ -464,6 +464,9 @@ function when_local(?string $utc): string
           '<div class="prog-pct">' + o.pct + '%</div>' +
         '</div>' +
         '<div class="prog-bar"><i style="width:' + o.pct + '%"></i></div>' +
+        /* A short course carries no credits (shortCourse, since 26 Oct 2026),
+           so the credit count and its sentence are left off rather than shown
+           as a claim the course cannot back. */
         '<p class="prog-note">' + o.modulesComplete + ' of ' + o.modulesTotal +
           ' modules marked complete' + (cur.shortCourse ? '.' :
           ' · ' + o.creditsClaimed + ' of ' + o.creditsTotal + ' ' + ESC(note)) + '</p></div>' +
@@ -487,6 +490,3 @@ function when_local(?string $utc): string
 <script src="<?= e(asset('site.js')) ?>"></script>
 </body>
 </html>
-        /* A short course carries no credits (shortCourse, since 26 Oct 2026),
-           so the credit count and its sentence are left off rather than shown
-           as a claim the course cannot back. */
