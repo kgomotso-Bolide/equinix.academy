@@ -44,11 +44,10 @@ return [
      not, so the line is omitted rather than rendered blank. */
   'enquiries_email' => '',
 
-  /* PLACEHOLDER — carried over from the static site, where it was also a
-     placeholder. It needs Equinix's real switchboard before anyone is told
-     the site is finished, or a learner will dial it. */
-  'phone'         => '012 345 6789',
-  'phone_href'    => '0123456789',
+  /* Kgomotso's cellphone, on her instruction of 29 Oct 2026: she takes the
+     academy's calls herself. The same number is on every academy. */
+  'phone'         => '+27 81 015 5135',
+  'phone_href'    => '+27810155135',
   'office_hours'  => 'Monday–Friday, 08:00–17:00 SAST',
 
   /* Placeholder text in the registration form.
