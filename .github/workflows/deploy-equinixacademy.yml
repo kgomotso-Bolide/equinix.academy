@@ -314,7 +314,7 @@ jobs:
           # to name is the one that leaks.
           home=$(curl -sS --max-time 30 "$base/contact" || echo '')
           leak=""
-          for other in "SPS Academy" "Sustainable Power" "Fungi Academy" "Maziv Academy" "Tracker Academy" "M&amp;T Academy" "Cricket SA Academy" "Inhance Academy" "Anglo American Academy" "ALT Capital Partners Academy" "AI &amp; U Academy"; do
+          for other in "SPS Academy" "Sustainable Power" "Fungi Academy" "Maziv Academy" "Tracker Academy" "M&amp;T Academy" "Cricket Coders Academy" "Inhance Academy" "Anglo American Academy" "ALT Capital Partners Academy" "AI &amp; U Academy"; do
             case "$home" in *"$other"*) leak="$leak $other" ;; esac
           done
           if [ -n "$leak" ]; then
