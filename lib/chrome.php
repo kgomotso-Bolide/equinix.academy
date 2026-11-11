@@ -168,8 +168,12 @@ function chrome_nav(string $variant, array $o = []): void
 
     /* nav-admin: the back-office bar carries a dozen links, so it gets its own
        width rules in the shared styles (see "Admin nav" there). */
+    $logo = chrome_logo();
+    if ($variant === 'learner' && brand_has('self_signup')) {
+        $logo = preg_replace('/^<a href="\.\/"/', '<a href="my"', $logo, 1);
+    }
     echo '<nav id="nav"' . ($variant === 'admin' ? ' class="nav-admin"' : '') . '>' . "\n  " . '<div class="nav-inner">' . "\n    "
-       . chrome_logo() . "\n";
+       . $logo . "\n";
 
     if ($variant === 'site') {
         echo '    <div class="nav-links" id="navLinks">' . "\n";
@@ -184,7 +188,10 @@ function chrome_nav(string $variant, array $o = []): void
            which has always had the same requirement. */
         /* "Alumni" on Fungi (3 Nov 2026): 'graduates_label' in a site's
            lib/brand.php renames the link. The address stays /graduates. */
-        echo '      <a href="graduates" data-nav="graduates">' . e(chrome_graduates_label()) . '</a>' . "\n";
+        /* 'hide_graduates' in a site's lib/brand.php drops the page (SPS, 10 Nov 2026). */
+        if (!brand_has('hide_graduates')) {
+            echo '      <a href="graduates" data-nav="graduates">' . e(chrome_graduates_label()) . '</a>' . "\n";
+        }
         /* A site's own extra pages, from 'nav_extra' in its lib/brand.php
            (href => label) — see brand_list() in lib/bootstrap.php. */
         foreach (brand_list('nav_extra') as $href => $label) {
@@ -192,12 +199,16 @@ function chrome_nav(string $variant, array $o = []): void
                . e((string) $label) . '</a>' . "\n";
         }
         echo '      <a href="contact" data-nav="contact"' . $on('contact') . '>Contact</a>' . "\n";
+        /* The browser-only Profile is not offered where learners make real
+           accounts (self_signup, SPS since 10 Nov 2026): the account holds it. */
+        if (!brand_has('self_signup')) {
         echo '      <a href="profile" data-nav="profile" class="nav-profile" title="Your profile">'
            . '<span class="np-av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" '
            . 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
            . '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'
            . '</svg></span><span class="np-label">Profile</span></a>' . "\n";
-        echo '      <a href="contact" class="nav-cta">Upskill Yourself</a>' . "\n";
+        }
+        echo '      <a href="' . (brand_has('self_signup') ? 'signup' : 'contact') . '" class="nav-cta">Upskill Yourself</a>' . "\n";
         echo '    </div>' . "\n";
         echo '    ' . chrome_nav_toggle() . "\n";
 
@@ -211,6 +222,29 @@ function chrome_nav(string $variant, array $o = []): void
         echo '    </div>' . "\n";
         echo '    ' . chrome_nav_toggle() . "\n";
 
+    } elseif ($variant === 'learner' && brand_has('self_signup')) {
+        /* Study-only nav (SPS, 10 Nov 2026, Sibusiso): "like a true learning
+           management system, once logged in you only see studying tabs". No Home
+           or Courses: clicking into the public site made learners think they had
+           been signed out. The logo goes to My learning too — see learner-nav.js,
+           which does the same on the static pages. Staff keep their way back. */
+        $here = (string) ($o['active'] ?? 'my');
+        $a = static fn(string $href, string $key, string $label): string =>
+            '      <a href="' . $href . '"' . ($here === $key ? ' class="active"' : '') . '>' . $label . '</a>' . "\n";
+        echo '    <div class="nav-links" id="navLinks">' . "\n";
+        echo $a('my#account', 'account', 'My account');
+        echo $a('my', 'my', 'My learning');
+        echo $a('files', 'files', 'My files');
+        echo $a('logbook', 'logbook', 'My logbook');
+        echo $a('submit', 'submit', 'Submit work');
+        echo $a('notices', 'notices', 'Notice board');
+        if (!empty($o['admin']))       echo '      <a href="admin">Administration</a>' . "\n";
+        elseif (!empty($o['trainer'])) echo '      <a href="trainer">My learners</a>' . "\n";
+        echo $a('contact', 'contact', 'Contact');
+        echo '      ' . chrome_signout() . "\n";
+        echo '    </div>' . "\n";
+        echo '    ' . chrome_nav_toggle() . "\n";
+
     } elseif ($variant === 'learner') {
         echo '    <div class="nav-links" id="navLinks">' . "\n";
         echo '      <a href="./" data-nav="home">Home</a>' . "\n";
@@ -220,6 +254,7 @@ function chrome_nav(string $variant, array $o = []): void
            than assumed. Defaulting to 'my' keeps every existing caller right. */
         $here = (string) ($o['active'] ?? 'my');
         echo '      <a href="my"' . ($here === 'my' ? ' class="active"' : '') . '>My learning</a>' . "\n";
+        echo '      <a href="files"' . ($here === 'files' ? ' class="active"' : '') . '>My files</a>' . "\n";
         echo '      <a href="logbook"' . ($here === 'logbook' ? ' class="active"' : '') . '>My logbook</a>' . "\n";
         echo '      <a href="submit"' . ($here === 'submit' ? ' class="active"' : '') . '>Submit work</a>' . "\n";
         echo '      <a href="notices"' . ($here === 'notices' ? ' class="active"' : '') . '>Notice board</a>' . "\n";
@@ -360,9 +395,11 @@ function chrome_footer(string $variant, array $o = []): void
             'about'        => 'About',
             'courses'      => 'Courses',
             'trainers'     => 'Trainers',
+        ] + (brand_has('hide_graduates') ? [] : [
             'graduates'    => e(chrome_graduates_label()),
-        ] + brand_list('nav_extra') + [
+        ]) + brand_list('nav_extra') + (brand_has('self_signup') ? [] : [
             'profile'      => 'Profile',
+        ]) + [
             'contact'      => 'Contact',
             'privacy'      => 'Privacy',
         ] as $href => $label) {

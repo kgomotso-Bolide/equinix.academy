@@ -62,5 +62,13 @@ return [
 
   /* Bumped on any release that changes styles.css or a .js file.
      See asset() in lib/chrome.php for why this is not optional. */
-  'asset_version' => '20261109',
+  'asset_version' => '20261111',
+
+  /* Self sign-up (11 Nov 2026, as on SPS since 10 Nov): a person creates their
+     own account on signup.php and puts themselves on a course, with no HR step.
+     Accounts appear in Admin > Users and can be disabled there. Also switches
+     on the study-only learner nav and drops the Profile link. */
+  'self_signup' => '1',
+  /* Graduates page taken off, 11 Nov 2026 (nav, footer and the page). */
+  'hide_graduates' => '1',
 ];
