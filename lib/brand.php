@@ -62,7 +62,7 @@ return [
 
   /* Bumped on any release that changes styles.css or a .js file.
      See asset() in lib/chrome.php for why this is not optional. */
-  'asset_version' => '20261111',
+  'asset_version' => '20261116b',
 
   /* Self sign-up (11 Nov 2026, as on SPS since 10 Nov): a person creates their
      own account on signup.php and puts themselves on a course, with no HR step.
@@ -71,4 +71,10 @@ return [
   'self_signup' => '1',
   /* Graduates page taken off, 11 Nov 2026 (nav, footer and the page). */
   'hide_graduates' => '1',
+
+  /* The signed-in app frame (16 Nov 2026, Sibusiso): a left sidebar and top
+     bar for learners (Home, Skills, My files, Account) and for staff (the
+     admin links, grouped), in place of the top nav on the signed-in pages.
+     The public site is unchanged. See chrome_app_shell() in lib/chrome.php. */
+  'app_shell' => '1',
 ];
