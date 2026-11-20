@@ -62,7 +62,7 @@ return [
 
   /* Bumped on any release that changes styles.css or a .js file.
      See asset() in lib/chrome.php for why this is not optional. */
-  'asset_version' => '20261118t',
+  'asset_version' => '20261120s',
 
   /* Self sign-up (11 Nov 2026, as on SPS since 10 Nov): a person creates their
      own account on signup.php and puts themselves on a course, with no HR step.
